@@ -1,0 +1,12 @@
+[project]
+name = "pinenode"
+version = "0.1.0"
+description = "A project based on pynescript to parse and interact with Pine Script"
+authors = ["Andrey Pavlov <andy91926@gmail.com>"]
+dependencies = [
+    "pynescript>=0.2.0",
+]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"

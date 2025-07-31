@@ -1,0 +1,119 @@
+//--------------------------------------------------//
+//--------------------------------------------------//
+//--------------------------------------------------//
+
+PS C:\Users\andy9\TradingAssistant> python.exe -m pynescript --version
+pynescript, version 0.2.0
+
+
+//--------------------------------------------------//
+//--------------------------------------------------//
+//--------------------------------------------------//
+
+
+PS C:\Users\andy9\TradingAssistant> python.exe -m pynescript parse-and-dump .\PineScripts\LevelsBot.tps
+Script(
+  body=[
+    Expr(
+      value=Call(
+        func=Name(id='strategy', ctx=Load()),
+        args=[
+          Arg(
+            value=Constant(value='LevelsBot')),
+          Arg(
+            value=Constant(value=True),
+            name='overlay'),
+          Arg(
+            value=Attribute(
+              value=Name(id='strategy', ctx=Load()),
+              attr='percent_of_equity',
+              ctx=Load()),
+            name='default_qty_type'),
+          Arg(
+            value=Constant(value=100),
+            name='default_qty_value')])),
+    Assign(
+      target=Name(id='startDate', ctx=Store()),
+      value=Call(
+        func=Attribute(
+          value=Name(id='input', ctx=Load()),
+          attr='time',
+          ctx=Load()),
+        args=[
+          Arg(
+            value=Constant(value='Start Date'),
+            name='title'),
+          Arg(
+            value=Call(
+              func=Name(id='timestamp', ctx=Load()),
+              args=[
+                Arg(
+                  value=Constant(value='01 Jan 2025 00:00 +0000'))]),
+            name='defval'),
+......
+          Expr(
+            value=Call(
+              func=Name(id='alert', ctx=Load()),
+              args=[
+                Arg(
+                  value=Name(id='alertMessage', ctx=Load())),
+                Arg(
+                  value=Attribute(
+                    value=Name(id='alert', ctx=Load()),
+                    attr='freq_once_per_bar',
+                    ctx=Load()))])),
+          ReAssign(
+            target=Name(id='last_closed_trades', ctx=Store()),
+            value=Attribute(
+              value=Name(id='strategy', ctx=Load()),
+              attr='closedtrades',
+              ctx=Load()))],
+        orelse=[]))],
+  annotations=[
+    '//@version=6'])
+
+//--------------------------------------------------//
+//--------------------------------------------------//
+//--------------------------------------------------//
+
+parse(script_source) → AST
+
+AST is traversed using NodeVisitor subclass (Visitor).
+
+Each node like strategy.entry(...) or ta.rsi(...) is mapped to a Python equivalent.
+
+It simulates bar-by-bar iteration of market data (DataFrame), updating:
+
+Internal state (like position/cash),
+
+Variable values,
+
+Entry/exit logic.
+
+At the end, it prints out trades and final performance.
+
+//--------------------------------------------------//
+//--------------------------------------------------//
+//--------------------------------------------------//
+
+PS C:\Users\andy9\PineNode> python.exe .\main.py
+Traceback (most recent call last):
+  File "C:\Users\andy9\PineNode\main.py", line 1, in <module>
+    from pinenode.executor import ExampleScriptExecutor
+  File "C:\Users\andy9\PineNode\pinenode\executor.py", line 13, in <module>
+    from historical_data import hist
+ModuleNotFoundError: No module named 'historical_data'
+
+//--------------------------------------------------//
+//--------------------------------------------------//
+//--------------------------------------------------//
+
+PS C:\Users\andy9\PineNode> python.exe .\main.py
+Traceback (most recent call last):
+  File "C:\Users\andy9\PineNode\main.py", line 10, in <module>
+    executor.execute(df)
+    ~~~~~~~~~~~~~~~~^^^^
+  File "C:\Users\andy9\PineNode\pinenode\executor.py", line 410, in execute
+    self.sources["close"].add(row.Close)
+                              ^^^^^^^^^
+AttributeError: 'Pandas' object has no attribute 'Close'. Did you mean: 'close'?
